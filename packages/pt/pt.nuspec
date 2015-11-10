@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if â€œÎ©â€ doesnâ€™t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>pt</id>
+    <title>The Platinum Searcher</title>
+    <version>1.7.9</version>
+    <authors>monochromegane</authors>
+    <owners>Daniel Santa Cruz</owners>
+    <summary>A code search tool similar to ack and the_silver_searcher(ag).</summary>
+    <description>
+
+A code search tool similar to `ack` and `the_silver_searcher(ag)`. It supports multi platforms and multi encodings.
+
+
+- It searches code about 3â€“5Ã— faster than `ack`.
+- It searches code as fast as `the_silver_searcher(ag)`.
+- It ignores file patterns from your `.gitignore` and `.hgignore`.
+- It searches `UTF-8`, `EUC-JP` and `Shift_JIS` files.
+- It provides binaries for multi platform (Mac OS X, Windows, Linux).
+    </description>
+    <projectUrl>https://github.com/monochromegane/the_platinum_searcher</projectUrl>
+    <tags>admin pt</tags>
+    <copyright></copyright>
+    <licenseUrl>https://github.com/monochromegane/the_platinum_searcher/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
