@@ -1,0 +1,8 @@
+* Instructions
+** To build
+
+cpack
+
+** To Install
+
+chocolatey install ripgrep -fdv -s . --version x.y.z
