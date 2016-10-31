@@ -14,9 +14,10 @@
       downloads available for every release.
     </description>
     <projectUrl>https://github.com/BurntSushi/ripgrep</projectUrl>
+    <projectSourceUrl>https://github.com/BurntSushi/ripgrep</projectSourceUrl>
     <bugTrackerUrl>https://github.com/BurntSushi/ripgrep/issues</bugTrackerUrl>
     <docsUrl>https://github.com/BurntSushi/ripgrep/blob/master/doc/rg.1.md</docsUrl>
-    <projectSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/ripgrep</projectSourceUrl>
+    <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/ripgrep</packageSourceUrl>
     <tags>search ripgrep rg</tags>
     <copyright></copyright>
     <licenseUrl>https://github.com/BurntSushi/ripgrep/blob/master/LICENSE-MIT</licenseUrl>
