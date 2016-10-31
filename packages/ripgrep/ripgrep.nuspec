@@ -4,16 +4,20 @@
   <metadata>
     <id>ripgrep</id>
     <title>ripgrep</title>
-    <version>0.2.1</version>
+    <version>0.2.5</version>
     <authors>BurntSushi</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A search tool that combines the usability of ag with the raw speed of grep.</summary>
     <description>
-
-ripgrep is a command line search tool that combines the usability of The Silver Searcher (an ack clone) with the raw speed of GNU grep. ripgrep has first class support on Windows, Mac and Linux, with binary downloads available for every release.
+      ripgrep is a command line search tool that combines the usability of The Silver Searcher (an ack clone)
+      with the raw speed of GNU grep. ripgrep has first class support on Windows, Mac and Linux, with binary
+      downloads available for every release.
     </description>
     <projectUrl>https://github.com/BurntSushi/ripgrep</projectUrl>
-    <tags>admin search ripgrep rg</tags>
+    <bugTrackerUrl>https://github.com/BurntSushi/ripgrep/issues</bugTrackerUrl>
+    <docsUrl>https://github.com/BurntSushi/ripgrep/blob/master/doc/rg.1.md</docsUrl>
+    <projectSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/ripgrep</projectSourceUrl>
+    <tags>search ripgrep rg</tags>
     <copyright></copyright>
     <licenseUrl>https://github.com/BurntSushi/ripgrep/blob/master/LICENSE-MIT</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
