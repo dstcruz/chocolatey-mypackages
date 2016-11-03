@@ -4,7 +4,7 @@
   <metadata>
     <id>ripgrep</id>
     <title>ripgrep</title>
-    <version>0.2.5</version>
+    <version>0.2.6</version>
     <authors>BurntSushi</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A search tool that combines the usability of ag with the raw speed of grep.</summary>
@@ -14,6 +14,7 @@
       downloads available for every release.
     </description>
     <projectUrl>https://github.com/BurntSushi/ripgrep</projectUrl>
+    <releaseNotes>https://github.com/BurntSushi/ripgrep/blob/master/CHANGELOG.md</releaseNotes>
     <projectSourceUrl>https://github.com/BurntSushi/ripgrep</projectSourceUrl>
     <bugTrackerUrl>https://github.com/BurntSushi/ripgrep/issues</bugTrackerUrl>
     <docsUrl>https://github.com/BurntSushi/ripgrep/blob/master/doc/rg.1.md</docsUrl>
