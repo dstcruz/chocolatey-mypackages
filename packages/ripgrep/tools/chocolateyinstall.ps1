@@ -1,6 +1,6 @@
 ﻿$ErrorActionPreference = 'Stop';
 
-$version     = "0.2.9"
+$version     = $env:chocolateyPackageVersion
 $packageName = $env:chocolateyPackageName
 $toolsDir    = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
@@ -12,10 +12,10 @@ $packageArgs = @{
   unzipLocation  = $toolsDir
   fileType       = 'exe'
   url            = $url
-  checksum       = "5F82A190A51E203CDA2CFF050B20F425C65CCD5A"
+  checksum       = "C1B9DCC7A6008F8E1DE33A6D396A0CA6F359701D"
   checksumType   = "sha1"
   url64bit       = $url64
-  checksum64     = "4D4866D8F3284F5C7E89470BE1530D6794EDC2CD"
+  checksum64     = "FADA0E9616DEE21CBBC78871BAE3F7D9A4A89FE6"
   checksumType64 = "sha1"
 }
 
