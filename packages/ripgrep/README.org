@@ -5,4 +5,4 @@ cpack
 
 ** To Install
 
-chocolatey install ripgrep -fdv -s . --version x.y.z
+chocolatey install ripgrep -fdv -s "'.;https://chocolatey.org/api/v2/'" --version x.y.z
