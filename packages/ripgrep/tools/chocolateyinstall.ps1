@@ -12,10 +12,10 @@ $packageArgs = @{
     unzipLocation  = $toolsDir
     fileType       = 'exe'
     url            = $url
-    checksum       = "950E98808EFCDEB95699BA1A9D1FAE7F118F65E2"
+    checksum       = "C0AEF3211C3E64E2770FE174A029E30FD2A042D5"
     checksumType   = "sha1"
     url64bit       = $url64
-    checksum64     = "37B7A0A1B3524350D73084C857C709105D5DF4C0"
+    checksum64     = "BF52F38DF02BF6E7B7D71220C1691190D41B16B7"
     checksumType64 = "sha1"
 }
 
