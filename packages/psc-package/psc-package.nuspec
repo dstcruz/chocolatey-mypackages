@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>psc-package</id>
+    <title>psc-package</title>
+    <version>0.3.2</version>
+    <authors>The Purescript community</authors>
+    <owners>Daniel Santa Cruz</owners>
+    <summary>A package manager for PureScript</summary>
+    <description>
+      psc-package is an executable which helps manage PureScript dependencies via Git.
+      It can be used directly, but it is also designed to be used by external tools.
+    </description>
+    <projectUrl>https://github.com/purescript/psc-package</projectUrl>
+    <projectSourceUrl>https://github.com/purescript/psc-package</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/purescript/psc-package/issues</bugTrackerUrl>
+    <docsUrl>https://github.com/purescript/psc-package/blob/v0.3.2/README.md</docsUrl>
+    <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/psc-package</packageSourceUrl>
+    <tags>purescript package-manager</tags>
+    <copyright></copyright>
+    <licenseUrl>https://github.com/purescript/psc-package/blob/v0.3.2/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
