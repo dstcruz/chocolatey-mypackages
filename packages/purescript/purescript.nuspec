@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>purescript</id>
+    <title>purescript</title>
+    <version>0.12.0</version>
+    <authors>The Purescript community</authors>
+    <owners>Daniel Santa Cruz</owners>
+    <summary>A strongly-typed language that compiles to Javascript</summary>
+    <description>
+      A small strongly typed programming language with expressive types that compiles to JavaScript, written in and inspired by Haskell.
+    </description>
+    <releaseNotes>
+# Breaking changes
+
+- Added applicative-do notation; `ado` is now a keyword. An full explanation of the behaviour and usage of `ado` is available [in a comment on the issue](https://github.com/purescript/purescript/pull/2889#issuecomment-301260299). (#2889, @rightfold)
+- Removed wrapper scripts for the old binary names (psc, psci, etc.) (#2993, @hdgarrood)
+- Removed compiler support for deriving `purescript-generics`. `purescript-generics-rep` is still supported. (#3007, @paf31)
+- Instances with just one method now require the method to be indented (bug fix, but potentially breaking) (#2947, @quesebifurcan)
+- Overlapping instances are now an error rather than a warning, but can be resolved with the new instance chain groups feature (#2315, @LiamGoodacre)
+- Reworked the `CoreFn` json representation. This change enables use of the [Zephyr tree shaking tool](https://github.com/coot/zephyr) for PureScript. (#3049, #3342, @coot)
+- It is no longer possible to export a type class that has superclasses that are not also exported (bug fix, but potentially breaking) (#3132, @parsonsmatt)
+- `Eq` and `Ord` deriving will now rely on `Eq1` and `Ord1` constraints as necessary where sometimes previously `Eq (f _)` would be required. `Eq1` and `Ord1` instances can also be derived. (#3207, @garyb)
+- Some `Prim` type classes have been renamed/moved, so will require explicit importing (#3176, @parsonsmatt):
+    - `RowCons` is now `Prim.Row.Cons`
+    - `Union` is now `Prim.Row.Union`
+    - `Fail` is now `Prim.TypeError.Fail`
+    - `Warn` is now `Prim.TypeError.Warn`
+- Users can no longer specify modules under the `Prim` namespace (#3291, @parsonsmatt)
+- `TypeConcat` and `TypeString` have been replaced because they were in kind `Symbol` but weren't literals.  The `Prim.TypeError.Doc` kind and related constructors (`Text`, `Quote`, `Beside`, `Above`) have been added in their place.  The `Fail` and `Warn` type classes now accept a `Doc` instead of a `Symbol`.
+ (#3134, @LiamGoodacre)
+- In simple cases instance overlaps are now checked at declaration time rather than being deferred until an attempt is made to use them. (#3129, @LiamGoodacre)
+- Chaining non-associative or mixed associativity operators of the same precedence is no longer allowed (#3315, @garyb)
+- The `--dump-corefn` and `--source-maps` arguments to `purs compile` have been removed. There is now a `--codegen` argument that allows the specific codegen targets to be specified - for example, `--codegen corefn` will not produce JS files, `--codgen js,corefn` will produce both. If the `sourcemaps` target is used `js` will be implied, so there's no difference between `--codegen js,sourcemaps` and `--codegen sourcemaps`). If no targets are specified the default is `js`. (#3196, @garyb, @gabejohnson)
+- Exported types that use foreign kinds now require the foreign kinds to be exported too (bug fix, but potentially breaking) (#3331, @garyb)
+- The pursuit commands were removed from `purs ide` due to lack of use and editor tooling implementing the features instead (#3355, @kRITZCREEK)
+
+# Enhancements
+
+- Added `Cons` compiler-solved type class for `Symbol` (#3054, @kcsongor)
+- The `Append` compiler-solved type class for `Symbol` can now be run in reverse (#3025, @paf31)
+- Find Usages for values and constructors in `purs ide` (#3206, @kRITZCREEK)
+- `purs ide` treats `hiding` imports the same as open imports when sorting (#3069, @kRITZCREEK)
+- Added inlining for fully saturated usages of `runEffFn/mkEffFn` (#3026, @nwolverson)
+- Improved explanation of `UnusableDeclaration` error (#3088, #3304, @i-am-tom)
+- Improved rendering of comments in generated JavaScript by removing additional newlines (#3096, @brandonhamilton)
+- Instance chain support. (#2315, @LiamGoodacre)
+    > We can now express an explicit ordering on instances that would previously have been overlapping.
+    > For example we could now write an `IsEqual` type class to compute if two types are equal or apart:
+    > ```
+    > class IsEqual (l :: Type) (r :: Type) (o :: Boolean) | l r -> o
+    > instance isEqualRefl :: IsEqual x x True
+    > else instance isEqualContra :: IsEqual l r False
+    > ```
+    > Note the `else` keyword that links the two instances together.
+    > The `isEqualContra` will only be up for selection once the compiler knows it couldn't possible select `isEqualRefl` - i.e that `l` and `r` are definitely not equal.
+- Improved orphan instance error to include locations where the instance would be valid (#3106, @i-am-tom)
+- Added an explicit error for better explanation of duplicate type class or instance declarations (#3093, @LiamGoodacre)
+- `purs ide` now provide documentation comments (#2349, @nwolverson)
+- Clarified meaning of duplicate labels in a `Record` row (#3143, @paf31)
+- Explicit import suggestions consistently use `(..)` for constructors now (#3142, @nwolverson)
+- Improved tab completion in `purs repl` (#3227, @rndnoise)
+- Large compiler perfomance improvement in some cases by skipping source spans in `Eq`, `Ord` for binders (#3265, @bitemyapp)
+- Added support for error/warning messages to carry multiple source spans (#3255, @garyb)
+- Improved tab completion in `purs repl` when parens and brackets are involved (#3236, @rndnoise)
+- Improved completion in `purs repl` after `:kind` and `:type` (#3237, @rndnoise)
+- Added the \"magic do\" optimisation for the new simplified `Effect` type (`Control.Monad.Eff` is still supported) (#3289, @kRITZCREEK, #3301, @garyb)
+- Improvide build startup times when resuming a build with incremental results (#3270, @kRITZCREEK)
+- Added compiler-solved `Prim.Row.Nub` type class (#3293, @natefaubion)
+- Improved docs for `Prim.Row.Cons` and `Prim.Row.Union` (#3292, @vladciobanu)
+- `Functor` can now be derived when quantifiers are used in constructors (#3232, @i-am-tom)
+- `purs repl` will now complete types after `::` (#3239, @rndnoise)
+- Added compiler-solved `Prim.Row.Lacks` type class (#3305, @natefaubion)
+- Added current output path to missing output error message from `purs ide` (#3311, @rgrinberg)
+- Improved parser error messages for `.purs-repl` (#3248, @rndnoise)
+- `require` in generated JavaScript now includes full `index.js` file paths (#2621, @chexxor)
+- Added more compiler-solved type classes and supporting types and kinds to `Prim`:
+    - `Prim.Ordering` module with `kind Ordering`, `type LT`, `type EQ`, `type GT`
+    - `Prim.RowList` module with `class RowToList`, `kind RowList`, `type Nil`, `type Cons`
+    - `Prim.Symbol` module with `class Compare`, `class Append`, `class Cons`
+    (#3312, @LiamGoodacre, @kRITZCREEK)
+- Generated code for closed records now explicitly reconstructs the record rather than looping (#1493, @fehrenbach, [blog post with more details](http://stefan-fehrenbach.net/blog/2018-04-28-efficient-updates-closed-records-purescript/index.html))
+- Enhanced `purs --help` message to include hint about using `--help` with commands (#3344, @hdgarrood)
+- `IncorrectConstructorArity` error message now includes a hint of how many arguments are expected for the constructor (#3353, @joneshf)
+- `purs ide` now uses absolute locations for file paths for better experience in some editors (#3363, @kRITZCREEK)
+
+# Bug fixes
+
+- Fixed a bug with names cause by `Prim` always being imported unqualified (#2197, @LightAndLight)
+- Fixed overlapping instances error message to reflect its new status as an error (#3084, @drets)
+- Added source position to `TypeClassDeclaration` errors (#3109, @b123400)
+- Fixed entailment issues with skolems and matches in the typechecker (#3121, @LiamGoodacre)
+- Fixed multiple parentheses around a type causing a crash (#3085, @MonoidMusician)
+- Fixed `purs ide` inserting conflicting imports for types (#3131, @nwolverson)
+- Fixed constraints being inferred differently for lambda expressions compared with equational declarations (#3125, @LiamGoodacre)
+- Updated glob handling to prevent excessive memory usage (#3055, @hdgarrood)
+- Added position information to warnings in type declarations (#3174, @b123400)
+- Fixed documentation generated for Pursuit rendering functional dependency variables as identifier links (#3180, @houli)
+- Naming a function argument `__unused` no longer breaks codegen (#3187, @matthewleon)
+- Added position information to `ShadowedName` warning (#3213, @garyb)
+- Added position information to `UnusedTypeVar` warning (#3214, @garyb)
+- Added position information to `MissingClassMember`, `ExtraneousClassMember`, `ExpectedWildcard` errors (#3216, @garyb)
+- Added position information to `ExportConflict` errors (#3217, @garyb)
+- Fixed `ctags` and `etags` generation when explicit exports are involved (#3204, @matthewleon)
+- Added position information to `ScopeShadowing` warning (#3219, @garyb)
+- Added position information for various FFI related errors and warnings (#3276, @garyb)
+- Added all available positions to `CycleInModule` and `DuplicateModule` errors (#3273, @garyb)
+- Added position information for `IntOutOfRange` errors (#3277, @garyb, @kRITZCREEK)
+- Warnings are now raised when a module re-exports a qualified module with implicit import (#2726, @garyb)
+- `purs repl` now shows results for `:browse Prim` (#2672, @rndnoise)
+- Added position information to `ErrorParsingFFIModule` (#3307, @nwolverson)
+- Added position information for `ScopeConflict` cause by exports (#3318, @garyb)
+- Added position information to errors that occur in binding groups and data binding groups (#3275, @garyb)
+- Fixed a scoping issue when resolving operators (#2803, @kRITZCREEK, @LightAndLight)
+- Type synonyms are now desugared earlier when newtype deriving (#3325, @LiamGoodacre)
+- Fixed subgoals of compiler-solved type classes being ignored (#3333, @LiamGoodacre)
+- Added position information to type operator associativity errors (#3337, @garyb)
+- Updated description of `purs docs` command (#3343, @hdgarrood)
+- Fixed `purs docs` issue with re-exporting from `Prim` submodules (#3347, @hdgarrood)
+- Enabled `purs ide` imports for `Prim` submodules (#3352, @kRITZCREEK)
+- Fixed `purs bundle` failing to bundle in the 0.12-rc1 (#3359, @garyb)
+- Enabled `:browse` for `Prim` submodules in `purs repl` (#3364, @kRITZCREEK)
+
+# Other
+
+- Updated installation information to include details about prebuild binaries (#3167, @MiracleBlue)
+- Test suite now prints output when failing cases are encountered (#3181, @parsonsmatt)
+- Updated test suite to use tasty (#2848, @kRITZCREEK)
+- Improved performance of `repl` test suite (#3234, @rndnoise)
+- Refactored `let` pattern desugaring to be less brittle (#3268, @kRITZCREEK)
+- Added makefile with common tasks for contributors (#3266, @bitemyapp)
+- Added `ghcid` and testing commands to makefile (#3290, @parsonsmatt)
+- Removed old unused `MultipleFFIModules` error (#3308, @nwolverson)
+- `mod` and `div` for `Int` are no longer inlined as their definition has changed in a way that makes their implementation more complicated - purescript/purescript-prelude#161 (#3309, @garyb)
+- The test suite now checks warnings and errors have position information (#3211, @garyb)
+- The AST was updated to be able to differentiate between `let` and `where` clauses (#3317, @joneshf)
+- Support for an optimization pass on `CoreFn` was added (#3319, @matthewleon)
+- Clarified note in the `purs ide` docs about the behaviour of `--editor-mode` (#3350, @chexxor)
+- Updated bundle/install docs for 0.12 (#3357, @hdgarrood)
+- Removed old readme for `psc-bundle` (a leftover from before the unified `purs` binary) (#3356, @Cmdv)
+    </releaseNotes>
+    <projectUrl>https://github.com/purescript/purescript</projectUrl>
+    <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
+    <docsUrl>https://github.com/purescript/purescript/blob/v0.12.0/README.md</docsUrl>
+    <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/purescript</packageSourceUrl>
+    <tags>purescript haskell javascript typed-language alt-js</tags>
+    <copyright></copyright>
+    <licenseUrl>https://github.com/purescript/purescript/blob/v0.12.0/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
