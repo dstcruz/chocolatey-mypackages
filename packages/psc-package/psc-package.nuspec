@@ -4,7 +4,7 @@
   <metadata>
     <id>psc-package</id>
     <title>psc-package</title>
-    <version>0.3.3</version>
+    <version>0.4.0</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A package manager for PureScript</summary>
@@ -13,23 +13,18 @@
       It can be used directly, but it is also designed to be used by external tools.
     </description>
     <releaseNotes>
-      This release contains some changes related to add-from-bower.
-      
-      == Handles no "dependencies" fields by @justinwoo ==
-      Some packages don't have dependencies, so they are now handled as empty dependency sets.
-
-      == Add branches by @strax ==
-      You can use package-name#branch-name to add specific braches/tags to your package set.
-      Note that you should not use branch names as your package sets should almost never be mutable.
+      Per #121, removes the confusing misfeature "add-from-bower", which led to many
+      users thinking this command was for adding "extra-deps" like Stack. See the thread
+      for details on how you could readily replace this command if you used it before.
     </releaseNotes>
     <projectUrl>https://github.com/purescript/psc-package</projectUrl>
     <projectSourceUrl>https://github.com/purescript/psc-package</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/psc-package/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/psc-package/blob/v0.3.3/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/psc-package/blob/v0.4.0/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/psc-package</packageSourceUrl>
     <tags>purescript package-manager</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/psc-package/blob/v0.3.3/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/psc-package/blob/v0.4.0/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
