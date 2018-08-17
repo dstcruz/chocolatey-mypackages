@@ -8,7 +8,7 @@ $packageArgs = @{
     packageName    = $packageName
     unzipLocation  = Split-Path $MyInvocation.MyCommand.Definition
     url64bit       = $url64
-    checksum64     = "83e7366b4348dd6fe0aeb14eac2377c27c076aff"
+    checksum64     = "74ce62c1bbcdae80cdfada507a8416a919e185dc"
     checksumType64 = "sha1"
 }
 
