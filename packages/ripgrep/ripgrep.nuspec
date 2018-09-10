@@ -4,7 +4,7 @@
   <metadata>
     <id>ripgrep</id>
     <title>ripgrep</title>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
     <authors>BurntSushi</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A search tool that combines the usability of ag with the raw speed of grep.</summary>
@@ -18,130 +18,98 @@
       We are currently depending on Visual C++ Redistributable for Visual Studio 2015 https://chocolatey.org/packages/vcredist2015. This will change once this https://github.com/rust-lang/rust/pull/37545 is resolved and ripgrep can statically link the CRT.
     </description>
     <releaseNotes>
-This is a new minor version release of ripgrep that contains some minor new
-features and a panoply of bug fixes.
+ripgrep is a line-oriented search tool that recursively searches your current directory for a regex pattern while respecting your gitignore rules. ripgrep has first class support on Windows, macOS and Linux, with binary downloads available for every release. ripgrep is similar to other popular search tools like The Silver Searcher, ack and grep.
 
-Releases provided on Github for `x86_64` will now work on all target CPUs, and
-will also automatically take advantage of features found on modern CPUs (such
-as AVX2) for additional optimizations.
+This is a new minor version release of ripgrep that contains some major new
+features, a huge number of bug fixes, and is the first release based on
+libripgrep. The entirety of ripgrep's core search and printing code has been
+rewritten and generalized so that anyone can make use of it.
 
-This release increases the **minimum supported Rust version** from 1.20.0 to
-1.23.0.
-
-It is anticipated that the next release of ripgrep (0.10.0) will provide
-multi-line search support and a JSON output format.
+Major new features include PCRE2 support, multi-line search and a JSON output
+format.
 
 **BREAKING CHANGES**:
 
-* When `--count` and `--only-matching` are provided simultaneously, the
-  behavior of ripgrep is as if the `--count-matches` flag was given. That is,
-  the total number of matches is reported, where there may be multiple matches
-  per line. Previously, the behavior of ripgrep was to report the total number
-  of matching lines. (Note that this behavior diverges from the behavior of
-  GNU grep.)
-* Octal syntax is no longer supported. ripgrep previously accepted expressions
-  like `\\1` as syntax for matching `U+0001`, but ripgrep will now report an
-  error instead.
-* The `--line-number-width` flag has been removed. Its functionality was not
-  carefully considered with all ripgrep output formats.
-  See [#795](https://github.com/BurntSushi/ripgrep/issues/795) for more
-  details.
+* The minimum version required to compile Rust has now changed to track the
+  latest stable version of Rust. Patch releases will continue to compile with
+  the same version of Rust as the previous patch release, but new minor
+  versions will use the current stable version of the Rust compile as its
+  minimum supported version.
+* The match semantics of `-w/--word-regexp` have changed slightly. They used
+  to be `\\b(?:&lt;your pattern&gt;)\\b`, but now it's
+  `(?:^|\\W)(?:&lt;your pattern&gt;)(?:$|\\W)`. This matches the behavior of GNU grep
+  and is believed to be closer to the intended semantics of the flag. See
+  [#389](https://github.com/BurntSushi/ripgrep/issues/389) for more details.
 
 Feature enhancements:
 
-* Added or improved file type filtering for Android, Bazel, Fuschia, Haskell,
-  Java and Puppet.
-* [FEATURE #411](https://github.com/BurntSushi/ripgrep/issues/411):
-  Add a `--stats` flag, which emits aggregate statistics after search results.
-* [FEATURE #646](https://github.com/BurntSushi/ripgrep/issues/646):
-  Add a `--no-ignore-messages` flag, which suppresses parse errors from reading
-  `.ignore` and `.gitignore` files.
-* [FEATURE #702](https://github.com/BurntSushi/ripgrep/issues/702):
-  Support `\\u{..}` Unicode escape sequences.
-* [FEATURE #812](https://github.com/BurntSushi/ripgrep/issues/812):
-  Add `-b/--byte-offset` flag that shows the byte offset of each matching line.
-* [FEATURE #814](https://github.com/BurntSushi/ripgrep/issues/814):
-  Add `--count-matches` flag, which is like `--count`, but for each match.
-* [FEATURE #880](https://github.com/BurntSushi/ripgrep/issues/880):
-  Add a `--no-column` flag, which disables column numbers in the output.
-* [FEATURE #898](https://github.com/BurntSushi/ripgrep/issues/898):
-  Add support for `lz4` when using the `-z/--search-zip` flag.
-* [FEATURE #924](https://github.com/BurntSushi/ripgrep/issues/924):
-  `termcolor` has moved to its own repository:
-  https://github.com/BurntSushi/termcolor
-* [FEATURE #934](https://github.com/BurntSushi/ripgrep/issues/934):
-  Add a new flag, `--no-ignore-global`, that permits disabling global
-  gitignores.
-* [FEATURE #967](https://github.com/BurntSushi/ripgrep/issues/967):
-  Rename `--maxdepth` to `--max-depth` for consistency. Keep `--maxdepth` for
-  backwards compatibility.
-* [FEATURE #978](https://github.com/BurntSushi/ripgrep/issues/978):
-  Add a `--pre` option to filter inputs with an arbitrary program.
-* [FEATURE fca9709d](https://github.com/BurntSushi/ripgrep/commit/fca9709d):
-  Improve zsh completion.
+* [FEATURE #162](https://github.com/BurntSushi/ripgrep/issues/162):
+  libripgrep is now a thing. The primary crate is
+  [`grep`](https://docs.rs/grep).
+* [FEATURE #176](https://github.com/BurntSushi/ripgrep/issues/176):
+  Add `-U/--multiline` flag that permits matching over multiple lines.
+* [FEATURE #188](https://github.com/BurntSushi/ripgrep/issues/188):
+  Add `-P/--pcre2` flag that gives support for look-around and backreferences.
+* [FEATURE #244](https://github.com/BurntSushi/ripgrep/issues/244):
+  Add `--json` flag that prints results in a JSON Lines format.
+* [FEATURE #321](https://github.com/BurntSushi/ripgrep/issues/321):
+  Add `--one-file-system` flag to skip directories on different file systems.
+* [FEATURE #404](https://github.com/BurntSushi/ripgrep/issues/404):
+  Add `--sort` and `--sortr` flag for more sorting. Deprecate `--sort-files`.
+* [FEATURE #416](https://github.com/BurntSushi/ripgrep/issues/416):
+  Add `--crlf` flag to permit `$` to work with carriage returns on Windows.
+* [FEATURE #917](https://github.com/BurntSushi/ripgrep/issues/917):
+  The `--trim` flag strips prefix whitespace from all lines printed.
+* [FEATURE #993](https://github.com/BurntSushi/ripgrep/issues/993):
+  Add `--null-data` flag, which makes ripgrep use NUL as a line terminator.
+* [FEATURE #997](https://github.com/BurntSushi/ripgrep/issues/997):
+  The `--passthru` flag now works with the `--replace` flag.
+* [FEATURE #1038-1](https://github.com/BurntSushi/ripgrep/issues/1038):
+  Add `--line-buffered` and `--block-buffered` for forcing a buffer strategy.
+* [FEATURE #1038-2](https://github.com/BurntSushi/ripgrep/issues/1038):
+  Add `--pre-glob` for filtering files through the `--pre` flag.
 
 Bug fixes:
 
-* [BUG #135](https://github.com/BurntSushi/ripgrep/issues/135):
-  Release portable binaries that conditionally use SSSE3, AVX2, etc., at
-  runtime.
-* [BUG #268](https://github.com/BurntSushi/ripgrep/issues/268):
-  Print descriptive error message when trying to use look-around or
-  backreferences.
-* [BUG #395](https://github.com/BurntSushi/ripgrep/issues/395):
-  Show comprehensible error messages for regexes like `\\s*{`.
-* [BUG #526](https://github.com/BurntSushi/ripgrep/issues/526):
-  Support backslash escapes in globs.
-* [BUG #795](https://github.com/BurntSushi/ripgrep/issues/795):
-  Fix problems with `--line-number-width` by removing it.
-* [BUG #832](https://github.com/BurntSushi/ripgrep/issues/832):
-  Clarify usage instructions for `-f/--file` flag.
-* [BUG #835](https://github.com/BurntSushi/ripgrep/issues/835):
-  Fix small performance regression while crawling very large directory trees.
-* [BUG #851](https://github.com/BurntSushi/ripgrep/issues/851):
-  Fix `-S/--smart-case` detection once and for all.
-* [BUG #852](https://github.com/BurntSushi/ripgrep/issues/852):
-  Be robust with respect to `ENOMEM` errors returned by `mmap`.
-* [BUG #853](https://github.com/BurntSushi/ripgrep/issues/853):
-  Upgrade `grep` crate to `regex-syntax 0.6.0`.
-* [BUG #893](https://github.com/BurntSushi/ripgrep/issues/893):
-  Improve support for git submodules.
-* [BUG #900](https://github.com/BurntSushi/ripgrep/issues/900):
-  When no patterns are given, ripgrep should never match anything.
-* [BUG #907](https://github.com/BurntSushi/ripgrep/issues/907):
-  ripgrep will now stop traversing after the first file when `--quiet --files`
-  is used.
-* [BUG #918](https://github.com/BurntSushi/ripgrep/issues/918):
-  Don't skip tar archives when `-z/--search-zip` is used.
-* [BUG #934](https://github.com/BurntSushi/ripgrep/issues/934):
-  Don't respect gitignore files when searching outside git repositories.
-* [BUG #948](https://github.com/BurntSushi/ripgrep/issues/948):
-  Use exit code 2 to indicate error, and use exit code 1 to indicate no
-  matches.
-* [BUG #951](https://github.com/BurntSushi/ripgrep/issues/951):
-  Add stdin example to ripgrep usage documentation.
-* [BUG #955](https://github.com/BurntSushi/ripgrep/issues/955):
-  Use buffered writing when not printing to a tty, which fixes a performance
-  regression.
-* [BUG #957](https://github.com/BurntSushi/ripgrep/issues/957):
-  Improve the error message shown for `--path separator /` in some Windows
-  shells.
-* [BUG #964](https://github.com/BurntSushi/ripgrep/issues/964):
-  Add a `--no-fixed-strings` flag to disable `-F/--fixed-strings`.
-* [BUG #988](https://github.com/BurntSushi/ripgrep/issues/988):
-  Fix a bug in the `ignore` crate that prevented the use of explicit ignore
-  files after disabling all other ignore rules.
-* [BUG #995](https://github.com/BurntSushi/ripgrep/issues/995):
-  Respect `$XDG_CONFIG_DIR/git/config` for detecting `core.excludesFile`.
+* [BUG #2](https://github.com/BurntSushi/ripgrep/issues/2):
+  Searching with non-zero context can now use memory maps if appropriate.
+* [BUG #200](https://github.com/BurntSushi/ripgrep/issues/200):
+  ripgrep will now stop correctly when its output pipe is closed.
+* [BUG #389](https://github.com/BurntSushi/ripgrep/issues/389):
+  The `-w/--word-regexp` flag now works more intuitively.
+* [BUG #643](https://github.com/BurntSushi/ripgrep/issues/643):
+  Detection of readable stdin has improved on Windows.
+* [BUG #441](https://github.com/BurntSushi/ripgrep/issues/441),
+  [BUG #690](https://github.com/BurntSushi/ripgrep/issues/690),
+  [BUG #980](https://github.com/BurntSushi/ripgrep/issues/980):
+  Matching empty lines now works correctly in several corner cases.
+* [BUG #764](https://github.com/BurntSushi/ripgrep/issues/764):
+  Color escape sequences now coalesce, which reduces output size.
+* [BUG #842](https://github.com/BurntSushi/ripgrep/issues/842):
+  Add man page to binary Debian package.
+* [BUG #922](https://github.com/BurntSushi/ripgrep/issues/922):
+  ripgrep is now more robust with respect to memory maps failing.
+* [BUG #937](https://github.com/BurntSushi/ripgrep/issues/937):
+  Color escape sequences are no longer emitted for empty matches.
+* [BUG #940](https://github.com/BurntSushi/ripgrep/issues/940):
+  Context from the `--passthru` flag should not impact process exit status.
+* [BUG #984](https://github.com/BurntSushi/ripgrep/issues/984):
+  Fixes bug in `ignore` crate where first path was always treated as a symlink.
+* [BUG #990](https://github.com/BurntSushi/ripgrep/issues/990):
+  Read stderr asynchronously when running a process.
+* [BUG #1013](https://github.com/BurntSushi/ripgrep/issues/1013):
+  Add compile time and runtime CPU features to `--version` output.
+* [BUG #1028](https://github.com/BurntSushi/ripgrep/pull/1028):
+  Don't complete bare pattern after `-f` in zsh.
     </releaseNotes>
     <projectUrl>https://github.com/BurntSushi/ripgrep</projectUrl>
     <projectSourceUrl>https://github.com/BurntSushi/ripgrep</projectSourceUrl>
     <bugTrackerUrl>https://github.com/BurntSushi/ripgrep/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/BurntSushi/ripgrep/blob/0.9.0/doc/rg.1.md</docsUrl>
+    <docsUrl>https://github.com/BurntSushi/ripgrep/blob/0.10.0/doc/rg.1.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/ripgrep</packageSourceUrl>
     <tags>search ripgrep rg</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/BurntSushi/ripgrep/blob/0.9.0/LICENSE-MIT</licenseUrl>
+    <licenseUrl>https://github.com/BurntSushi/ripgrep/blob/0.10.0/LICENSE-MIT</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
       <dependency id="vcredist2015" />
