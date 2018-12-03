@@ -3,6 +3,10 @@
 
 cpack
 
-** To Install
+** To install
 
 chocolatey install psc-package -fdv -s "'.;https://chocolatey.org/api/v2/'" --version x.y.z
+
+** To get release info
+
+[[https://api.github.com/repos/purescript/psc-package/releases]]

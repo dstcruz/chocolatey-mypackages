@@ -4,7 +4,7 @@
   <metadata>
     <id>psc-package</id>
     <title>psc-package</title>
-    <version>0.4.2</version>
+    <version>0.5.1</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A package manager for PureScript</summary>
@@ -13,18 +13,16 @@
       It can be used directly, but it is also designed to be used by external tools.
     </description>
     <releaseNotes>
-Fixes binary version number. No other changes.
-
-See the new docs page here: https://psc-package.readthedocs.io/en/latest/
+      Bumps the version number of Psc-Package executable
     </releaseNotes>
     <projectUrl>https://github.com/purescript/psc-package</projectUrl>
     <projectSourceUrl>https://github.com/purescript/psc-package</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/psc-package/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/psc-package/blob/v0.4.2/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/psc-package/blob/v0.5.1/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/psc-package</packageSourceUrl>
     <tags>purescript package-manager</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/psc-package/blob/v0.4.2/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/psc-package/blob/v0.5.1/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
