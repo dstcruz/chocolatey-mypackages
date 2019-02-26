@@ -5,7 +5,7 @@
     <id>purescript</id>
     <iconUrl>https://cdn.rawgit.com/purescript/logo/4decbaa835707c000c8ce7dcc854ad664683cabf/youtube/channel_icon-800.png</iconUrl>
     <title>purescript</title>
-    <version>0.12.1</version>
+    <version>0.12.3</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A strongly-typed language that compiles to Javascript</summary>
@@ -15,38 +15,31 @@
     <releaseNotes>
 # Enhancements
 
-* Print types of missing typeclass members (#3398, @fehrenbach)
-* Added `Prim.TypeError.QuoteLabel` for pretty printing labels in custom type errors (#3436, @dariooddenino)
-* `purs ide` accepts codegen targets for the rebuild command (#3449, @kRITZCREEK)
+- Add better positions for UnknownName errors for types/kinds (#3515, @colinwahl)
 
-# Fixes
+Previously an UnknownName error (arising from e.g. referring to a non-existent type, or a type which you forgot to import) would have a span covering the whole type annotation. Now, the error span only covers the relevant part of the type.
 
-* Fixes errors spans for `CannotFindDerivingType` (#3425, @kRITZCREEK)
-* Fixes a traversal bug where `ObjectNestedUpdate` was surviving desugaring (#3388, @natefaubion)
-* Fixes type operators reexports (#3410, @natefaubion) 
-* Fixes ST magic-do and inlining (#3444, @natefaubion)
-* Fixes missing span information when using do-syntax without importing `bind` or `discard` (#3418, @natefaubion)
-* Fixes missing span information when shadowing an open import with a module definition (#3417, @natefaubion)
-* Fixes stale `:browse` environment after `:reload` (#3001, @rndnoise)
+- Boost performance of `purs docs` by simplifying re-export handling (#3534, @hdgarrood)
+
+# Bug fixes
+
+- Fix applicative do notation breaking API documentation generation with `purs docs` (#3414, @hdgarrood)
+- Fix the REPL browser backend (#3387, @dariooddenino)
 
 # Other
 
-* Fix test-support dependency versions and update psci browse test (#3374, @LiamGoodacre) 
-* Changes to build with GHC 8.4.3 (#3372, @kRITZCREEK)
-* Set --haddock flag based on BUILD_TYPE (#3409, @justinwoo)
-* Use `microlens-platform` instead of `lens` (#3400, @joneshf)
-* Avoid `Data.ByteString.Lazy.toStrict` (#3433, @coot)
-* Add ffiCodegen to MakeActions (#3434, @coot)
-* Add nix config to stack.yaml (#3435, @f-f)     
+- Make the license generator a proper stack script (@kRITZCREEK)
+- Include the module from which something was imported for re-exports in externs files (@hdgarrood)
+- Add AppVeyor build status to README.md (@hdgarrood)
     </releaseNotes>
     <projectUrl>https://github.com/purescript/purescript</projectUrl>
     <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/purescript/blob/v0.12.1/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/purescript/blob/v0.12.3/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/purescript</packageSourceUrl>
     <tags>purescript haskell javascript typed-language alt-js</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/purescript/blob/v0.12.1/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/purescript/blob/v0.12.3/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
