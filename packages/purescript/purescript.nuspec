@@ -5,7 +5,7 @@
     <id>purescript</id>
     <iconUrl>https://cdn.rawgit.com/purescript/logo/4decbaa835707c000c8ce7dcc854ad664683cabf/youtube/channel_icon-800.png</iconUrl>
     <title>purescript</title>
-    <version>0.12.3</version>
+    <version>0.12.4</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A strongly-typed language that compiles to Javascript</summary>
@@ -13,33 +13,109 @@
       A small strongly typed programming language with expressive types that compiles to JavaScript, written in and inspired by Haskell.
     </description>
     <releaseNotes>
-# Enhancements
+## Enhancements
 
-- Add better positions for UnknownName errors for types/kinds (#3515, @colinwahl)
+### [purs ide] Treat module declarations like any other (#3541)
 
-Previously an UnknownName error (arising from e.g. referring to a non-existent type, or a type which you forgot to import) would have a span covering the whole type annotation. Now, the error span only covers the relevant part of the type.
+This means we can now complete module names with the completion API as well as being able to query for module level documentation and goto-defintion for module names.
 
-- Boost performance of `purs docs` by simplifying re-export handling (#3534, @hdgarrood)
+The list loadedModules command has also been deprecated, since you can now use the completion command with a filter for modules instead. (@kRITZCREEK)
 
-# Bug fixes
+### Truncate types in errors (#3401)
 
-- Fix applicative do notation breaking API documentation generation with `purs docs` (#3414, @hdgarrood)
-- Fix the REPL browser backend (#3387, @dariooddenino)
+Large types in error messages are now truncated. For example:
 
-# Other
+```purescript
+module Main where
 
-- Make the license generator a proper stack script (@kRITZCREEK)
-- Include the module from which something was imported for re-exports in externs files (@hdgarrood)
-- Add AppVeyor build status to README.md (@hdgarrood)
+data Id a = Id a
+
+foo :: Id (Id (Id (Id (Id Int))))
+foo = "hi"
+```
+
+now produces
+
+```
+  Could not match type
+  
+    String
+  
+  with type
+  
+    Id (Id (Id (... ...)))
+```
+
+The previous behaviour of printing the types in full may be recovered by passing the `--verbose-errors` flag to the compiler. (@hdgarrood)
+
+### Don't generate unused imports in JavaScript output (#2177)
+
+In both CommonJS compiler output and JavaScript `purs bundle` output, we no longer emit JS imports for modules whose use sites have all been optimized out. This reduces the number of warnings produced by other JavaScript bundlers or compressors such as "Side effects in initialization of unused variable Control_Category". (@rhendric)
+
+### Simplify `purs publish` resolutions format (#3565)
+
+The format for resolutions files passed via the CLI to `purs publish` has been simplified. A new-style resolutions file should look something like this:
+
+```
+{
+  "purescript-prelude": {
+     "version": "4.0.0",
+     "path": "bower_components/purescript-prelude"
+  },
+  "purescript-lists": {
+     "version": "6.0.0",
+     "path": "bower_components/purescript-lists"
+  },
+  ...
+}
+```
+
+The `version` field is used for generating links between packages on Pursuit, and the `path` field is used to obtain the source files while generating documentation: all files matching the glob "src/**/*.purs" relative to the
+`path` directory will be picked up.
+
+The `version` field is optional, but omitting it will mean that no links will be generated for any declarations from that package on Pursuit. The "path" field is required.
+
+The old format is still accepted, but it has been deprecated, and `purs publish` will now produce a warning when consuming it.
+
+This change allows us to work around a bug in Bower which prevented packages with larger dependency trees (such as Halogen) from being uploaded to Pursuit (https://github.com/purescript-contrib/pulp/issues/351). (@hdgarrood)
+
+### Improve error messages for cycles in type class declarations (#3223)
+
+A cycle in type class declarations, such as
+
+```purescript
+class C a &lt;= D a
+class D a &lt;= C a
+```
+
+now produces a more informative error, which no longer confusingly refers to type synonyms, and which displays all of the classes involved in the cycle. (@Saulukass)
+
+## Bug fixes
+
+* Naming a constructor `PS` no longer causes JS runtime errors when using `purs bundle` (#3505, @mhcurylo)
+* `purs publish` now warns instead of failing if not all dependencies have a resolved version, e.g. if some have been installed via a branch or commit reference instead of a version range (#3061, @hdgarrood)
+
+## Other
+
+* Raise upper bound on aeson in package.yaml (#3537, @jacereda)
+* Add Nix test dependencies to stack.yaml (#3525, @jmackie)
+* [purs ide] Represent filters as a data type rather than functions (#3547, @kRITZCREEK)
+* Carry data constructor field names in the AST (#3566, @garyb)
+* Convert prim docs tests to use tasty (#3568, @hdgarrood)
+* Bump bower version used in tests (#3570, @garyb)
+* Add tests for `purs bundle` (#3533, @mhcurylo)
+* Update to GHC 8.6.4 (#3560, @kRITZCREEK)
+* Rerun some of the compiler tests to test with `purs bundle` (#3579, @rhendric)
+* Fix handling of directive prologues like "use strict" in `purs bundle` (#3581, @rhendric)
     </releaseNotes>
     <projectUrl>https://github.com/purescript/purescript</projectUrl>
     <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/purescript/blob/v0.12.3/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/purescript/blob/v0.12.4/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/purescript</packageSourceUrl>
     <tags>purescript haskell javascript typed-language alt-js</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/purescript/blob/v0.12.3/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/purescript/blob/v0.12.4/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
