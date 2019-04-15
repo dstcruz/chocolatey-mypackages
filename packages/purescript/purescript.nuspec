@@ -5,7 +5,7 @@
     <id>purescript</id>
     <iconUrl>https://cdn.rawgit.com/purescript/logo/4decbaa835707c000c8ce7dcc854ad664683cabf/youtube/channel_icon-800.png</iconUrl>
     <title>purescript</title>
-    <version>0.12.4</version>
+    <version>0.12.5</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A strongly-typed language that compiles to Javascript</summary>
@@ -13,6 +13,10 @@
       A small strongly typed programming language with expressive types that compiles to JavaScript, written in and inspired by Haskell.
     </description>
     <releaseNotes>
+There are no release notes for 0.12.5
+
+Release notes for 0.12.4
+
 ## Enhancements
 
 ### [purs ide] Treat module declarations like any other (#3541)
@@ -111,11 +115,11 @@ now produces a more informative error, which no longer confusingly refers to typ
     <projectUrl>https://github.com/purescript/purescript</projectUrl>
     <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/purescript/blob/v0.12.4/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/purescript/blob/v0.12.5/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/purescript</packageSourceUrl>
     <tags>purescript haskell javascript typed-language alt-js</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/purescript/blob/v0.12.4/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/purescript/blob/v0.12.5/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
