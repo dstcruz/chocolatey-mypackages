@@ -5,7 +5,7 @@
     <id>purescript</id>
     <iconUrl>https://cdn.rawgit.com/purescript/logo/4decbaa835707c000c8ce7dcc854ad664683cabf/youtube/channel_icon-800.png</iconUrl>
     <title>purescript</title>
-    <version>0.13.0</version>
+    <version>0.13.3</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A strongly-typed language that compiles to Javascript</summary>
@@ -13,78 +13,128 @@
       A small strongly typed programming language with expressive types that compiles to JavaScript, written in and inspired by Haskell.
     </description>
     <releaseNotes>
-# Grammar/Parser Changes
-
-`0.13` is a very exciting release for me (@natefaubion). For the past few months I've been working on a complete rewrite of the existing parser. The old parser has served us very well, but it has grown very organically over the years which means it's developed some unsightly limbs! Throughout the process I've tried to iron out a lot of dark corner cases in the language grammar, and I hope this release will set us on a firm foundation so we can start to specify what \"PureScript the Language\" actually is. This release is definitely breaking, but I think you'll find the changes are modest. I also hope that this release will open up a lot of opportunities for syntactic tooling, both using the existing parser or even using alternative parsers (which are now possible).
-
-## Breaking
-
-There are a number of breaking changes, but I think you'll find that most code will continue to parse fine. We've tested the parser against the existing ecosystem and several large production applications at Awake, Lumi, and SlamData. The migration burden was either non-existent or only involved a few changes.
-
-* The only whitespace now allowed in _code_ is ASCII space and line endings. Since you must use indentation to format PureScript code (unlike Haskell), we felt it was best to be more restrictive in what you can write instead of allowing potentially confusing behavior (implicit tab-width, zero-width spaces, etc). You can still use unicode whitespace within string literals.
-* The only escapes accepted in string literals are `\n\r\t\'\"\\`, `\x[0-9a-fA-F]{1,6}` (unicode hex escape), and `\[\r\n ]+\` (gap escapes). We had inherited a vast zoo of escape codes from the Parsec Haskell Language parser. We decided to minimize what we support, and only add things back if there is significant demand.
-* Octal and binary literals have been removed (hex remains).
-* `\` is no longer a valid operator. It conflicts with lambda syntax.
-* `@` is no longer a valid operator. It conflicts with named binder syntax.
-* `forall` is no longer a valid identifier for expressions. We wanted a consistent rule for type identifiers and expression identifiers.
-* Precedence of constructors with arguments in binders (`a@Foo b` must be `a@(Foo b)`).
-* Precedence of kind annotations (`a :: Type -> Type b :: Type` must now be `(a :: Type -> Type) (b :: Type)`).
-* Precedence of type annotations (`::` has lowest precedence, rather than sitting between operators and function application).
-* Various edge cases with indentation/layout. Again, most code should work fine, but there were some cases where the old parser let you write code that violated the offside rule.
-
-## Fixes
-
-* Many fixes around parse error locations. The new parser should yield much more precise error locations, especially for large expressions (like in HTML DSLs).
-* Reported source spans no longer include whitespace and comments.
-* Reported source span for the last token in a file is now correct.
-
 ## Enhancements
 
-* `where` is still only sugar for `let` (it does not introduce bindings over guards), but it is now usable in `case` branches in the same manner as declarations.
-* `_` is now allowed in numeric literals, and is an ignored character (ie. `1_000_000 == 1000000`).
-* Raw string literals (triple quotes) can now contain trailing quotes (ie. `"""hello "world"""" == "hello \"world\""`).
-* Kind annotations are now allowed in `forall` contexts (#3576 @colinwahl).
-* The new parser is much faster and can avoid parsing module bodies when initially sorting modules. We also do more work in parallel during the initialization phase of `purs compile`. This means that time to start compiling is faster, and incremental builds are faster. In my testing, a noop call to `purs compile` on the Awake codebase went from ~10s to ~3s.
+* Eliminate empty type class dictionaries in generated code (#2768, @LiamGoodacre)
 
-# Other Changes
+  Empty type class dictionaries -- dictionaries which do not contain any type class member implementations at runtime -- are often used to provide evidence at compile-time to justify that a particular operation will not fail; for example, `Prim.Row.Cons` can be used to justify that we can expect a record to contain a particular field with a particular type.  Unfortunately, constructing empty dictionaries can be costly, especially in more complex scenarios such as type-level programming. This release implements a new optimization which avoids the need to build empty dictionaries at runtime by instead inserting `undefined` into the generated code. This optimization can both reduce code size and improve performance in certain contexts.
+  
+* Render doc-comments for data constructors and type class members in HTML documentation (#3507, @marcosh)
 
-## Breaking
+  Documentation comments for data constructors and type class members are now picked up by `purs docs`, and will soon start appearing in Pursuit too. For example:
+  
+  ```purescript
+  -- | Doc-comments like this one were always rendered in Pursuit
+  data Maybe a =
+    -- | Now this one (for the Just constructor) will be rendered too
+    = Just a
+    -- | And this one (for Nothing)
+    | Nothing
+    
+  -- | Doc-comments like this one were always rendered in Pursuit
+  class Eq a where
+    -- | Now this one (for the `eq` method) will be rendered too
+    eq :: a -> a -> Boolean
+  ```
+  
+* Show diffs of rows in errors and hints (#3392, @dariooddenino)
 
-* Fix sharing in function composition inlining (#3439 @natefaubion). This is really a bugfix, but it has the potential to break code. Previously, you could write recursive point-free compositions that the compiler inadvertently eta-expanded into working code by eliminating sharing. We've changed the optimization to respect strict evaluation semantics, which can cause existing code to stack overflow. This generally arises in instance definitions. Unfortunately, we don't have a way to disallow the problematic code at this time.
-* Fail compilation when a module imports itself (#3586 @hdgarrood).
-* Disallow re-exporting class and type with the same name (#3648 @joneshf).
+  In type mismatches between rows, we now elide common labels so that the problem is easier to identify. For example, consider the following code, which has a type error due to the types of the `b` fields in the two records not matching:
+  
+  ```purescript
+  foo =
+    { a: 1, b: \"hi\", c: 3, d: 4, e: 5 }
+  bar =
+    { a: 1, b: 2, c: 3, d: 4, e: 5 }
+  baz =
+    [ foo, bar ]
+  ```
+  
+  Previously, the type error would include the entirety of each record type:
+  
+  ```
+  Could not match type
+          
+    String
+          
+  with type
+       
+    Int
 
-## Enhancements
+  while trying to match type ( a :: Int   
+                             , b :: String
+                             , c :: Int   
+                             , d :: Int   
+                             , e :: Int   
+                             )            
+  with type ( a :: Int
+            , b :: Int
+            , c :: Int
+            , d :: Int
+            , e :: Int
+            )
+  ```
+  
+  This can become quite difficult to read in the case of large record types. Now, we get this:
+  
+  ```
+  Could not match type
+          
+    String
+          
+  with type
+       
+    Int
+       
+  while trying to match type                
+                             ( b :: String
+                             ...          
+                             )            
+                                          
+  with type             
+              ( b :: Int
+              ...       
+              ) 
+  ```
+  
+## Bug fixes
 
-* Better illegal whitespace errors (#3627 @hdgarrood).
-* Only display class members that are not exported from the module when throwing a `TransitiveExportError` for a class (#3612 @colinwahl).
-* Tweaks to type pretty printing (#3610 @garyb).
-* Unify matching constraints (#3620 @garyb).
-* Improve error message on ModuleNotFound error for Prim modules (#3637 @ealmansi).
+* Remove more dead code in `purs bundle` (#3551, @rhendric)
 
-## Docs
+  The dead code elimination in `purs bundle` now no longer incorrectly considers declarations to be used in the presence of local variables which happen to share their names, and is therefore able to remove these declarations when they are unused.
 
-* Make markdown format behave like html. Remove --docgen opt. Separate directories for html and markdown docs (#3641 @ealmansi).
-* Make html the default output format (#3643 @ealmansi).
-* Write ctags and etags to filesystem instead of stdout (#3644 @ealmansi).
-* Add --output option for purs docs (#3647 @hdgarrood).
-* Use externs files when producing docs (#3645 @hdgarrood). `docs` is now a codegen target for `purs compile` where documentation is persisted as a `docs.json` file in the `output` directory.
+* Fix parsing of comma-separated guards in let statements (#3713, @natefaubion)
 
-## Internal
+  The 0.13 parser would previously choke on guards separated by commas in let statements within do/ado blocks, such as
+  
+  ```purescript
+  test = ado
+    let
+      foo
+        | bar
+        , baz =
+          42
+        | otherwise = 100
+    in
+      foo
+  ```
+  
+  This has now been fixed.
+  
+## Other
 
-* Remove failable patterns and `NoMonadFailDesugaring` extension (#3610 @adnelson).
-* Add tests for grammar fixes addressed by CST (#3629 #3631 @hdgarrood).
-* Keep Parser.y ASCII to avoid locale issues with happy (#3640 @jmackie).
-* Improve display of internal errors (#3634 @hdgarrood).
+* Add placeholder purs.bin to fix npm installs (#3695, @hdgarrood)
+* Refactor and simplify BuildPlan a little (#3699, @hdgarrood)
+* Update link to partial type class guide in error message hints (#3717, @alextes)
     </releaseNotes>
     <projectUrl>https://github.com/purescript/purescript</projectUrl>
     <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/purescript/blob/v0.13.0/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/purescript/blob/v0.13.3/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/purescript</packageSourceUrl>
     <tags>purescript haskell javascript typed-language alt-js</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/purescript/blob/v0.13.0/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/purescript/blob/v0.13.3/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
