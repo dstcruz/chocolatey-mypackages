@@ -5,7 +5,7 @@
     <id>purescript</id>
     <iconUrl>https://cdn.rawgit.com/purescript/logo/4decbaa835707c000c8ce7dcc854ad664683cabf/youtube/channel_icon-800.png</iconUrl>
     <title>purescript</title>
-    <version>0.13.3</version>
+    <version>0.13.4</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A strongly-typed language that compiles to Javascript</summary>
@@ -15,126 +15,114 @@
     <releaseNotes>
 ## Enhancements
 
-* Eliminate empty type class dictionaries in generated code (#2768, @LiamGoodacre)
+* Use content hashes when determining whether a file needs rebuilding (#3708, @hdgarrood)
 
-  Empty type class dictionaries -- dictionaries which do not contain any type class member implementations at runtime -- are often used to provide evidence at compile-time to justify that a particular operation will not fail; for example, `Prim.Row.Cons` can be used to justify that we can expect a record to contain a particular field with a particular type.  Unfortunately, constructing empty dictionaries can be costly, especially in more complex scenarios such as type-level programming. This release implements a new optimization which avoids the need to build empty dictionaries at runtime by instead inserting `undefined` into the generated code. This optimization can both reduce code size and improve performance in certain contexts.
-  
-* Render doc-comments for data constructors and type class members in HTML documentation (#3507, @marcosh)
+  We now calculate and store content hashes of input files during compilation. If a file's modification time has changed since the last compile, we compare the hash to the previous hash; if the hash is unchanged, this allows us to skip rebuilding this file, speeding up the build.
 
-  Documentation comments for data constructors and type class members are now picked up by `purs docs`, and will soon start appearing in Pursuit too. For example:
-  
+* Include import declaration qualifiers in unused import warnings (#3685, @matthew-hilty)
+
+  Previously, warnings didn't distinguish between import declarations from the same module. Code like the following
   ```purescript
-  -- | Doc-comments like this one were always rendered in Pursuit
-  data Maybe a =
-    -- | Now this one (for the Just constructor) will be rendered too
-    = Just a
-    -- | And this one (for Nothing)
-    | Nothing
-    
-  -- | Doc-comments like this one were always rendered in Pursuit
-  class Eq a where
-    -- | Now this one (for the `eq` method) will be rendered too
-    eq :: a -> a -> Boolean
+  import A.B (x) -- `x` is used.
+  import A.B (y) as C -- `y` is not used.
   ```
-  
-* Show diffs of rows in errors and hints (#3392, @dariooddenino)
+  would induce a warning like `The import of module A.B is redundant` even though only the qualified import declaration `C` is actually redundant. The warning now would be `The import of module A.B (qualified as C) is redundant`.
 
-  In type mismatches between rows, we now elide common labels so that the problem is easier to identify. For example, consider the following code, which has a type error due to the types of the `b` fields in the two records not matching:
-  
+* Include kind imports when determining unused import warnings (#3685, @matthew-hilty)
+
+  Previously, kind imports were ignored. The linter wouldn't emit any warnings for code like the following.
   ```purescript
-  foo =
-    { a: 1, b: \"hi\", c: 3, d: 4, e: 5 }
-  bar =
-    { a: 1, b: 2, c: 3, d: 4, e: 5 }
-  baz =
-    [ foo, bar ]
+  import A.B (kind K) -- `kind K` is not used.
   ```
-  
-  Previously, the type error would include the entirety of each record type:
-  
+  And the linter, disregarding `kind K`, would emit an `UnusedImport` instead of an `UnusedExplicitImport` for code like the following.
+  ```purescript
+  import A.B (x, kind K) -- `x` is not used, but `kind K` is.
   ```
-  Could not match type
-          
-    String
-          
-  with type
-       
-    Int
 
-  while trying to match type ( a :: Int   
-                             , b :: String
-                             , c :: Int   
-                             , d :: Int   
-                             , e :: Int   
-                             )            
-  with type ( a :: Int
-            , b :: Int
-            , c :: Int
-            , d :: Int
-            , e :: Int
-            )
+* Better reporting of I/O errors (#3730, @hdgarrood)
+
+  If an unexpected I/O error occurs during compiling, we now include details in the error message. For example, when trying to write compilation results onto a device which has run out of space, we previously would have received a \"CannotWriteFile\" error with no further information. Now, we receive the underlying error message too:
+
   ```
-  
-  This can become quite difficult to read in the case of large record types. Now, we get this:
-  
+  I/O error while trying to write JSON file: ./output/cache-db.json
+
+    ./output/cache-db.json: hClose: resource exhausted (No space left on device)
   ```
-  Could not match type
-          
-    String
-          
-  with type
-       
-    Int
-       
-  while trying to match type                
-                             ( b :: String
-                             ...          
-                             )            
-                                          
-  with type             
-              ( b :: Int
-              ...       
-              ) 
-  ```
-  
+
 ## Bug fixes
 
-* Remove more dead code in `purs bundle` (#3551, @rhendric)
+* Improve type class resolution in the presence of constrained higher-order functions (#3558, @matthew-hilty)
 
-  The dead code elimination in `purs bundle` now no longer incorrectly considers declarations to be used in the presence of local variables which happen to share their names, and is therefore able to remove these declarations when they are unused.
-
-* Fix parsing of comma-separated guards in let statements (#3713, @natefaubion)
-
-  The 0.13 parser would previously choke on guards separated by commas in let statements within do/ado blocks, such as
-  
+  This is perhaps best illustrated with an example.
   ```purescript
-  test = ado
-    let
-      foo
-        | bar
-        , baz =
-          42
-        | otherwise = 100
-    in
-      foo
+  newtype LBox row a = LBox (∀ r. (∀ lbl _1. Row.Cons lbl a _1 row ⇒ IsSymbol lbl ⇒ SProxy lbl → r) → r)
+
+  unLBox ∷ ∀ row a r. (∀ lbl _1. Row.Cons lbl a _1 row ⇒ IsSymbol lbl ⇒ SProxy lbl → r) → LBox row a → r
+  unLBox g (LBox f) = f g
+
+  read ∷ ∀ row a. Record row → LBox row a → a
+  read rec = unLBox \\lbl → Record.get lbl rec
   ```
-  
-  This has now been fixed.
-  
+
+  The `read` function would previously fail with the error
+
+  ```
+  No type class instance was found for
+
+      Prim.Row.Cons lbl4
+                    a5
+                    t2
+                    row6
+  ```
+
+  although that dictionary should have been available in the function passed to `unLBox`. Now, it type checks successfully.
+
+* Fix cache invalidation false negatives by storing timestamps (#3705, @hdgarrood)
+
+  Previously, an input file would be considered 'modified', and thus requiring rebuilding on a subsequent compile, if its modification time specifies a point in time after any of the modification times of the corresponding output files.  This has turned out to be insufficient; files can often change in a way that this algorithm misses, because the input file might still have a timestamp older than the output files. Often this can happen by switching between `git` branches or by updating a dependency.
+
+  This problem can manifest as compiler errors which don't appear to make sense or correspond to what is inside a source file, and which (until now) would need to be fixed by a clean rebuild (e.g. `rm -r output`).
+
+  We now make a note of the modification time when we read an input file, and we consider that input file to have changed on a subsequent compile if the modification time is different to what it was before.
+
+  The hope with this fix is that it should never be necessary to remove an output directory to get a build to run successfully. If you do run into this problem again, it is a bug: please report it.
+
+* Fix exports incorrectly being identified as unused in purs bundle (#3727, @rhendric)
+
+  References to properties on the `exports` object would previously not be picked up by `purs bundle` as uses of those properties, which could lead to them being incorrectly removed. For example:
+
+  ```javascript
+  'use strict';
+
+  exports.foo = 1;
+  exports.bar = exports.foo;
+  ```
+
+  would remove the `exports.foo = 1;` statement, breaking the assignment to `exports.bar`, if `foo` were not used elsewhere. This statement is now no longer removed.
+
+* Show entire rows in type errors in the presence of the `--verbose-errors` flag (#3722, @Woody88)
+
+  The row diffing feature, which elides common labels in rows occurring in type errors, did not previously respect the `--verbose-errors` flag, giving the same output regardless of whether it was set or not.  Now, if the flag has been supplied, we always show the entire row.
+
 ## Other
 
-* Add placeholder purs.bin to fix npm installs (#3695, @hdgarrood)
-* Refactor and simplify BuildPlan a little (#3699, @hdgarrood)
-* Update link to partial type class guide in error message hints (#3717, @alextes)
+* Add Makefile command to run license generator (#3718, @hdgarrood)
+* Update language-javascript to 0.7.0.0 (@rhendric, @hdgarrood)
+
+  This enables a number of newer JavaScript syntactic constructs to be used in FFI files. Please see the [language-javascript release notes][] for details.
+
+* Fix for object shorthand syntax in FFI files (#3742, @hdgarrood)
+
+[language-javascript release notes]: https://hackage.haskell.org/package/language-javascript-0.7.0.0/changelog
     </releaseNotes>
     <projectUrl>https://github.com/purescript/purescript</projectUrl>
     <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/purescript/blob/v0.13.3/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/purescript/blob/v0.13.4/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/purescript</packageSourceUrl>
     <tags>purescript haskell javascript typed-language alt-js</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/purescript/blob/v0.13.3/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/purescript/blob/v0.13.4/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
