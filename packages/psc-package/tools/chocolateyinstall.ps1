@@ -1,15 +1,11 @@
 ﻿$ErrorActionPreference = 'Stop';
 
-$version     = $env:chocolateyPackageVersion
-$packageName = $env:chocolateyPackageName
-$url64       = ("https://github.com/purescript/psc-package/releases/download/v{0}/win64.tar.gz" -f $version)
-
 $packageArgs = @{
-    packageName    = $packageName
+    packageName    = $Env:chocolateyPackageName
     unzipLocation  = Split-Path $MyInvocation.MyCommand.Definition
-    url64bit       = $url64
-    checksum64     = "0cca71ba8fecbd4941062c0ca670a3b2dca117ee"
-    checksumType64 = "sha1"
+    url64          = 'https://github.com/purescript/psc-package/releases/download/v0.5.1/win64.tar.gz'
+    checksum64     = '52288bfa0586de6187ea057488467f809e15a1df6db2d1609271a711753cc062'
+    checksumType64 = 'sha256'
 }
 
 Install-ChocolateyZipPackage @packageArgs

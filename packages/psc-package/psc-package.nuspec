@@ -12,9 +12,7 @@
       psc-package is an executable which helps manage PureScript dependencies via Git.
       It can be used directly, but it is also designed to be used by external tools.
     </description>
-    <releaseNotes>
-      Bumps the version number of Psc-Package executable
-    </releaseNotes>
+    <releaseNotes>https://github.com/purescript/psc-package/releases/tag/v0.5.1</releaseNotes>
     <projectUrl>https://github.com/purescript/psc-package</projectUrl>
     <projectSourceUrl>https://github.com/purescript/psc-package</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/psc-package/issues</bugTrackerUrl>
