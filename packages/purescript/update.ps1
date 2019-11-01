@@ -1,7 +1,5 @@
 Import-Module AU
 
-$releases = 'https://github.com/purescript/purescript/releases'
-
 function global:au_SearchReplace {
     @{
         ".\tools\chocolateyinstall.ps1" = @{
