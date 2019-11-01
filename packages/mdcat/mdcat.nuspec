@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>mdcat</id>
+    <title>mdcat</title>
+    <version>0.13.0</version>
+    <authors>lunaryorn</authors>
+    <owners>Daniel Santa Cruz</owners>
+    <summary>A cat tool for markdown</summary>
+    <description>
+mdcat renders Markdown files in the terminal. In ConEmu links are clickable, and images are rendered.
+    </description>
+    <releaseNotes>https://github.com/lunaryorn/mdcat/releases/mdcat-0.13.0</releaseNotes>
+    <projectUrl>https://github.com/lunaryorn/mdcat</projectUrl>
+    <projectSourceUrl>https://github.com/lunaryorn/mdcat</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/lunaryorn/mdcat/issues</bugTrackerUrl>
+    <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/mdcat</packageSourceUrl>
+    <tags>markdown pager</tags>
+    <licenseUrl>https://github.com/lunaryorn/mdcat/blob/mdcat-0.13.0/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
