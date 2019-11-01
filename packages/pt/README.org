@@ -1,8 +1,0 @@
-* Instructions
-** To build
-
-cpack
-
-** To Install
-
-chocolatey install pt -fdv -s . --version x.y.z
