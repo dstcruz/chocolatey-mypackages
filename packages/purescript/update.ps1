@@ -13,10 +13,10 @@ function global:au_SearchReplace {
 }
 
 function global:au_GetLatest {
-    $json = Invoke-RestMethod "http://api.github.com/repos/purescript/purescript/releases/latest"
+    $json = Invoke-RestMethod "https://api.github.com/repos/purescript/purescript/releases/latest"
 
     @{
-        Version = $json.name.Replace('v', '')
+        Version = $json.tag_name.Replace('v', '')
         # ReleaseNotes = $json.body
         URL64 = $json.assets | Where-Object browser_download_url -match win64.tar.gz | ForEach-Object browser_download_url | Select-Object -First 1
     }
