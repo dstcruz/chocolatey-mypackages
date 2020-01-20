@@ -14,6 +14,7 @@
     </description>
     <releaseNotes>https://github.com/purescript/psc-package/releases/tag/v0.13.6</releaseNotes>
     <projectUrl>https://github.com/purescript/purescript</projectUrl>
+    <iconUrl>https://cdn.statically.io/gh/dstcruz/chocolatey-mypackages/23250dc1746912e73c16be5b4382e3e163a22bed/packages/logos/purescript-logo.png</iconUrl>
     <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
     <docsUrl>https://github.com/purescript/purescript/blob/v0.13.6/README.md</docsUrl>
