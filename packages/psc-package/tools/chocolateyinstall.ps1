@@ -3,8 +3,8 @@
 $packageArgs = @{
     packageName    = $Env:chocolateyPackageName
     unzipLocation  = Split-Path $MyInvocation.MyCommand.Definition
-    url64          = 'https://github.com/purescript/psc-package/releases/download/v0.5.1/win64.tar.gz'
-    checksum64     = '52288bfa0586de6187ea057488467f809e15a1df6db2d1609271a711753cc062'
+    url64          = 'https://github.com/purescript/psc-package/releases/download/v0.6.0/win64.tar.gz'
+    checksum64     = 'b117b5898fff4f36c28666851705e9d94cbb7bb935512877e6e37b2c158b8b50'
     checksumType64 = 'sha256'
 }
 

@@ -4,7 +4,7 @@
   <metadata>
     <id>psc-package</id>
     <title>psc-package</title>
-    <version>0.5.1</version>
+    <version>0.6.0</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A package manager for PureScript</summary>
@@ -12,15 +12,15 @@
       psc-package is an executable which helps manage PureScript dependencies via Git.
       It can be used directly, but it is also designed to be used by external tools.
     </description>
-    <releaseNotes>https://github.com/purescript/psc-package/releases/tag/v0.5.1</releaseNotes>
+    <releaseNotes>https://github.com/purescript/psc-package/releases/tag/v0.6.0</releaseNotes>
     <projectUrl>https://github.com/purescript/psc-package</projectUrl>
     <projectSourceUrl>https://github.com/purescript/psc-package</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/psc-package/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/psc-package/blob/v0.5.1/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/psc-package/blob/v0.6.0/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/psc-package</packageSourceUrl>
     <tags>purescript package-manager</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/psc-package/blob/v0.5.1/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/psc-package/blob/v0.6.0/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
