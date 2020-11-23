@@ -4,16 +4,24 @@ $releases = 'https://github.com/BurntSushi/ripgrep/releases'
 
 function global:au_SearchReplace {
     @{
-        ".\tools\chocolateyinstall.ps1" = @{
-            "(^[$]url\s*=\s*)('.*')" = "`$1'$($Latest.URL32)'"
-            "(^[$]url64\s*=\s*)('.*')" = "`$1'$($Latest.URL64)'"
-            "(?i)(^\s*checksum\s*=\s*)('.*')" = "`$1'$($Latest.Checksum32)'"
-            "(?i)(^\s*checksum64\s*=\s*)('.*')" = "`$1'$($Latest.Checksum64)'"
+        ".\tools\chocolateyInstall.ps1" = @{
+            "(?i)(^\s*FileFullPath\s*=\s*)(.*)" = "`$1Join-Path `$toolsDir '$($Latest.FileName32)'"
+            "(?i)(^\s*FileFullPath64\s*=\s*)(.*)" = "`$1Join-Path `$toolsDir '$($Latest.FileName64)'"
+        }
+        ".\legal\VERIFICATION.txt" = @{
+            "(?i)(\s+x32:).*"            = "`${1} $($Latest.URL32)"
+            "(?i)(checksum32:).*"        = "`${1} $($Latest.Checksum32)"
+            "(?i)(\s+x64:).*"            = "`${1} $($Latest.URL64)"
+            "(?i)(checksum64:).*"        = "`${1} $($Latest.Checksum64)"
         }
         "ripgrep.nuspec" = @{
             "\d+\.\d+\.\d+" = "$($Latest.Version)"
         }
     }
+}
+
+function global:au_BeforeUpdate {
+    Get-RemoteFiles -Purge -NoSuffix
 }
 
 function global:au_GetLatest {
@@ -31,4 +39,4 @@ function global:au_GetLatest {
     }
 }
 
-Update-Package
+Update-Package -ChecksumFor None
