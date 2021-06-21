@@ -28,8 +28,8 @@ function global:au_GetLatest {
     $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
     $url_base = 'https://github.com'
     $urls =  $download_page.Links | Where-Object href -match 'pc-windows-msvc' | ForEach-Object href | Select-Object -First 2
-    $url32 = $url_base + $urls.Where({ $_ -match 64 })
-    $url64 = $url_base + $urls.Where({ $_ -match 686 }) 
+    $url32 = $url_base + $urls.Where({ $_ -match 686 }) 
+    $url64 = $url_base + $urls.Where({ $_ -match 64 })
     $version = $url32 -split '/' | Select-Object -Last 1 -Skip 1
 
     @{
