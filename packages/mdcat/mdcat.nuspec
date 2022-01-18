@@ -4,20 +4,20 @@
   <metadata>
     <id>mdcat</id>
     <title>mdcat</title>
-    <version>0.24.2</version>
+    <version>0.25.1</version>
     <authors>lunaryorn</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A cat tool for markdown</summary>
     <description>
 mdcat renders Markdown files in the terminal. In ConEmu links are clickable, and images are rendered.
     </description>
-    <releaseNotes>https://github.com/lunaryorn/mdcat/releases/tag/mdcat-0.24.2</releaseNotes>
+    <releaseNotes>https://github.com/lunaryorn/mdcat/releases/tag/mdcat-0.25.1</releaseNotes>
     <projectUrl>https://github.com/lunaryorn/mdcat</projectUrl>
     <projectSourceUrl>https://github.com/lunaryorn/mdcat</projectSourceUrl>
     <bugTrackerUrl>https://github.com/lunaryorn/mdcat/issues</bugTrackerUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/mdcat</packageSourceUrl>
     <tags>markdown pager</tags>
-    <licenseUrl>https://github.com/lunaryorn/mdcat/blob/mdcat-0.24.2/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/lunaryorn/mdcat/blob/mdcat-0.25.1/LICENSE</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
   </metadata>
   <files>
