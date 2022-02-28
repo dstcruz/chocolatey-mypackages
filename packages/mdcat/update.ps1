@@ -1,6 +1,7 @@
 Import-Module AU
 
-$releases = 'https://github.com/lunaryorn/mdcat/releases'
+#$releases = 'https://github.com/lunaryorn/mdcat/releases'
+$releases = 'https://codeberg.org/flausch/mdcat/releases'
 
 function global:au_SearchReplace {
     @{
