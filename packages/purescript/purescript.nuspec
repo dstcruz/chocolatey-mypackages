@@ -4,23 +4,23 @@
   <metadata>
     <id>purescript</id>
     <title>purescript</title>
-    <version>0.15.2</version>
+    <version>0.15.3</version>
     <authors>The Purescript community</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A strongly-typed language that compiles to Javascript</summary>
     <description>
       A small strongly typed programming language with expressive types that compiles to JavaScript, written in and inspired by Haskell.
     </description>
-    <releaseNotes>https://github.com/purescript/psc-package/releases/tag/v0.15.2</releaseNotes>
+    <releaseNotes>https://github.com/purescript/psc-package/releases/tag/v0.15.3</releaseNotes>
     <projectUrl>https://github.com/purescript/purescript</projectUrl>
     <iconUrl>https://cdn.statically.io/gh/dstcruz/chocolatey-mypackages/23250dc1746912e73c16be5b4382e3e163a22bed/packages/logos/purescript-logo.png</iconUrl>
     <projectSourceUrl>https://github.com/purescript/purescript</projectSourceUrl>
     <bugTrackerUrl>https://github.com/purescript/purescript/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/purescript/purescript/blob/v0.15.2/README.md</docsUrl>
+    <docsUrl>https://github.com/purescript/purescript/blob/v0.15.3/README.md</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/purescript</packageSourceUrl>
     <tags>purescript haskell javascript typed-language alt-js</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/purescript/purescript/blob/v0.15.2/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/purescript/purescript/blob/v0.15.3/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
