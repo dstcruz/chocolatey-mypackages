@@ -1,7 +1,5 @@
 Import-Module AU
 
-$releases = 'https://github.com/BurntSushi/ripgrep/releases'
-
 function global:au_SearchReplace {
     @{
         ".\tools\chocolateyInstall.ps1" = @{
@@ -25,12 +23,14 @@ function global:au_BeforeUpdate {
 }
 
 function global:au_GetLatest {
-    $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
-    $url_base = 'https://github.com'
-    $urls =  $download_page.Links | Where-Object href -match 'pc-windows-msvc' | ForEach-Object href | Select-Object -First 2
-    $url32 = $url_base + $urls.Where({ $_ -match 686 }) 
-    $url64 = $url_base + $urls.Where({ $_ -match 64 })
-    $version = $url32 -split '/' | Select-Object -Last 1 -Skip 1
+    $releases = 'https://github.com/BurntSushi/ripgrep/releases/latest'
+    $versionRegex = '\/releases\/tag\/(?:v|V)?(?<version>[\d.]+)'
+    Invoke-WebRequest -Uri $releases -UseBasicParsing | Where-Object href -match $versionRegex
+    $version = $Matches['version']
+    $url_base = "https://github.com/BurntSushi/ripgrep/releases/download/${version}/ripgrep-${version}-"
+
+    $url32 = $url_base + "i686-pc-windows-msvc.zip"
+    $url64 = $url_base + "x86_64-pc-windows-msvc.zip"
 
     @{
         URL32 = $url32
