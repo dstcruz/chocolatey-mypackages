@@ -1,8 +1,5 @@
 Import-Module AU
 
-#$releases = 'https://github.com/lunaryorn/mdcat/releases'
-$releases = 'https://codeberg.org/flausch/mdcat/releases'
-
 function global:au_SearchReplace {
     @{
         ".\tools\chocolateyinstall.ps1" = @{
@@ -16,10 +13,15 @@ function global:au_SearchReplace {
 }
 
 function global:au_GetLatest {
-    $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
-    $url_part = $download_page.Links | Where-Object href -match 'windows' | ForEach-Object href | Select-Object -First 1
-    $url = 'https://github.com' + $url_part
-    $version = $url -split '/' | Select-Object -Last 1 -Skip 1 | ForEach-Object { $_ -split '-' } | Select-Object -Last 1
+    $latest = 'https://github.com/lunaryorn/mdcat/releases/latest'
+    $versionRegex = 'releases/tag/mdcat-(.*)'
+    $download_page = Invoke-WebRequest -Uri $latest -UseBasicParsing
+    $version = `
+        $download_page.Links`
+        | Where-Object href -match $versionRegex `
+        | Select-Object -First 1 @{ Name="Version"; Expression={ [regex]::Match($_.href, $versionRegex).Groups[1].Value }} `
+        | Select-Object -ExpandProperty Version
+    $url = "https://github.com/lunaryorn/mdcat/releases/download/mdcat-${version}/mdcat-${version}-x86_64-pc-windows-msvc.zip"
 
     @{
         URL32 = $url
