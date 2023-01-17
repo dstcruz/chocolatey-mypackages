@@ -4,7 +4,7 @@ $version     = $env:chocolateyPackageVersion
 $packageName = $env:chocolateyPackageName
 $toolsDir    = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
-$url         = 'https://github.com/lunaryorn/mdcat/releases/download/mdcat-0.30.3/mdcat-0.30.3-x86_64-pc-windows-msvc.zip'
+$url         = 'https://github.com/lunaryorn/mdcat/releases/download/mdcat-1.0.0/mdcat-1.0.0-x86_64-pc-windows-msvc.zip'
 
 $packageArgs = @{
     packageName    = $packageName
@@ -12,7 +12,7 @@ $packageArgs = @{
     fileType       = 'exe'
     url            = $url
     checksumType   = 'sha256'
-    checksum       = '8cd675b90a4c95d1969616ce0d939c007d06b0624919645804bfe9d9f555d1e3'
+    checksum       = 'd0a01e71450496419a74744ff1e826f11b76689e3d2101bc65384d08c570219a'
 }
 
 Install-ChocolateyZipPackage @packageArgs
