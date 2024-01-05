@@ -25,7 +25,7 @@ function global:au_BeforeUpdate {
 function global:au_GetLatest {
     $releases = 'https://github.com/BurntSushi/ripgrep/releases/latest'
     $versionRegex = '\/releases\/tag\/(?:v|V)?(?<version>[\d.]+)'
-    Invoke-WebRequest -Uri $releases -UseBasicParsing | Where-Object href -match $versionRegex
+    Invoke-WebRequest -Uri $releases -UseBasicParsing | Select-Object -ExpandProperty Links | Where-Object href -match $versionRegex
     $version = $Matches['version']
     $url_base = "https://github.com/BurntSushi/ripgrep/releases/download/${version}/ripgrep-${version}-"
 
