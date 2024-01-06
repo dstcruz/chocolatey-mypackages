@@ -4,7 +4,7 @@
   <metadata>
     <id>ripgrep</id>
     <title>ripgrep</title>
-    <version>13.0.0.20220913</version>
+    <version>14.0.3</version>
     <authors>BurntSushi</authors>
     <owners>Daniel Santa Cruz</owners>
     <summary>A search tool that combines the usability of ag with the raw speed of grep.</summary>
@@ -13,19 +13,19 @@
       with the raw speed of GNU grep. ripgrep has first class support on Windows, Mac and Linux, with binary
       downloads available for every release.
 
-     # Notes on version 13.0.0.20220913
+     # Notes on version 14.0.3.20220913
 
-     After more carefully reviewing the release notes from version 13.0.0, we are now removing the dependency on vcredist2015.
+     After more carefully reviewing the release notes from version 14.0.3, we are now removing the dependency on vcredist2015.
     </description>
-    <releaseNotes>https://github.com/BurntSushi/ripgrep/releases/tag/13.0.0</releaseNotes>
+    <releaseNotes>https://github.com/BurntSushi/ripgrep/releases/tag/14.0.3</releaseNotes>
     <projectUrl>https://github.com/BurntSushi/ripgrep</projectUrl>
     <projectSourceUrl>https://github.com/BurntSushi/ripgrep</projectSourceUrl>
     <bugTrackerUrl>https://github.com/BurntSushi/ripgrep/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/BurntSushi/ripgrep/blob/13.0.0/doc/rg.1.txt.tpl</docsUrl>
+    <docsUrl>https://github.com/BurntSushi/ripgrep/blob/14.0.3/doc/rg.1.txt.tpl</docsUrl>
     <packageSourceUrl>https://github.com/dstcruz/chocolatey-mypackages/tree/master/packages/ripgrep</packageSourceUrl>
     <tags>search ripgrep rg</tags>
     <copyright></copyright>
-    <licenseUrl>https://github.com/BurntSushi/ripgrep/blob/13.0.0/LICENSE-MIT</licenseUrl>
+    <licenseUrl>https://github.com/BurntSushi/ripgrep/blob/14.0.3/LICENSE-MIT</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
