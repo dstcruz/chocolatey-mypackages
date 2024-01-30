@@ -7,8 +7,8 @@ Package can be verified like this:
 
 1. Go to
 
-   x32: https://github.com/BurntSushi/ripgrep/releases/download/14.0.3/ripgrep-14.0.3-i686-pc-windows-msvc.zip
-   x64: https://github.com/BurntSushi/ripgrep/releases/download/14.0.3/ripgrep-14.0.3-x86_64-pc-windows-msvc.zip
+   x32: https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-i686-pc-windows-msvc.zip
+   x64: https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-pc-windows-msvc.zip
 
    to download the zip.
 
@@ -16,5 +16,5 @@ Package can be verified like this:
    - Use powershell function 'Get-FileHash'
    - Use Chocolatey utility 'checksum.exe'
 
-   checksum32: 75415AA80E2C458A2BB34BDD31653E29EC9B32240141B18D65784B965301EA94
-   checksum64: B6DF202A06CAB342CF28302F319DDD5788DA10672781C38DD49EBE566B423E3F
+   checksum32: 3B2E4776F9510D2F502FEA92F1BE45C02FF0F46DA50F034B04FE866182FFC0D6
+   checksum64: FE4F75EDFAA50F0D4FECBF47696B7629F3449C9C2C5A4DA828753139E5A2E203

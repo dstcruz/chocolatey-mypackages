@@ -5,8 +5,8 @@ $toolsDir               = "$(Split-Path -parent $MyInvocation.MyCommand.Definiti
 $packageArgs = @{
     PackageName    = $env:ChocolateyPackageName
     Destination    = $toolsDir
-    FileFullPath   = Join-Path $toolsDir 'ripgrep-14.0.3-i686-pc-windows-msvc.zip'
-    FileFullPath64 = Join-Path $toolsDir 'ripgrep-14.0.3-x86_64-pc-windows-msvc.zip'
+    FileFullPath   = Join-Path $toolsDir 'ripgrep-14.1.0-i686-pc-windows-msvc.zip'
+    FileFullPath64 = Join-Path $toolsDir 'ripgrep-14.1.0-x86_64-pc-windows-msvc.zip'
 }
 
 #Remove old versions of ripgrep in the tools directory
